@@ -109,7 +109,7 @@ btej5.addEventListener("click", function(){
 
 //Ejercicio 6:
 /**
- * Mismo caso que el anterior , sin embaro sin classList.togle,
+ * Mismo caso que el anterior , sin embargo sin classList.togle,
  * ya que el usuario podrá cambiar las dimensiones de la imagén cuando quiera
  * Gestionamos los nulos con el if .
  * @param width, @param height, @param btej6
