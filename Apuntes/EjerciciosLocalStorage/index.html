@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ejercicio: localStorage y JSON</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:640px;margin:0 auto;padding:20px;line-height:1.5}
+  section{border:1px solid #ccc;border-radius:12px;padding:16px;margin-bottom:16px}
+  form{display:flex;gap:8px}
+  input{flex:1;padding:8px}
+  button{padding:8px 12px;cursor:pointer}
+  ul{list-style:none;padding:0}
+  li{display:flex;gap:8px;align-items:center;padding:8px 0;border-top:1px solid #ddd}
+  li span{flex:1}
+  li.hecha span{text-decoration:line-through;color:#888}
+  pre{background:#f0f0ea;padding:12px;border-radius:8px;white-space:pre-wrap;word-break:break-all}
+</style>
+</head>
+<body>
+  <h1>Ejercicio: localStorage + JSON</h1>
+
+  <section>
+    <h2>Lista de tareas</h2>
+    <form id="form">
+      <input id="texto" placeholder="Escribe una tarea..." autocomplete="off" required>
+      <button type="submit" id="submit">Añadir</button>
+    </form>
+    <ul id="lista"></ul>
+    <button id="borrar" type="button">Borrar todo</button>
+  </section>
+
+  <section>
+    <h2>Lo guardado en localStorage</h2>
+    <pre id="crudo"></pre>
+  </section>
+
+<script type="module">
+const CLAVE = "tareas";
+
+// TODO 1: leer las tareas guardadas en localStorage.
+// Pista: getItem + JSON.parse, y un array vacío si no hay nada.
+let tareas = [];
+const tareasGuardadas= JSON.parse(localStorage.getItem(tareas)) || [];
+
+// TODO 2: guardar el array "tareas" en localStorage.
+// Pista: setItem + JSON.stringify.
+
+const añadir = document.getElementById("submit");
+añadir.addEventListener("click",function guardar(){
+    localStorage.setItem("tareas",JSON.stringify(tareas));
+});
+
+function pintar() {
+  const ul = document.getElementById("lista");
+  ul.innerHTML = "";
+
+  tareas.forEach((t, i) => {
+    const li = document.createElement("li");
+    if (t.hecha) li.className = "hecha";
+
+    const span = document.createElement("span");
+    span.textContent = t.texto;
+
+    const ok = document.createElement("button");
+    ok.textContent = t.hecha ? "Deshacer" : "Hecha";
+    ok.onclick = () => { tareas[i].hecha = !tareas[i].hecha; actualizar(); };
+
+    const del = document.createElement("button");
+    del.textContent = "Quitar";
+    del.onclick = () => { tareas.splice(i, 1); actualizar(); };
+
+    li.append(span, ok, del);
+    ul.appendChild(li);
+  });
+
+  // TODO 3: mostrar en el <pre id="crudo"> el texto que hay guardado
+  // en localStorage (o un mensaje si está vacío).
+}
+
+function actualizar() {
+  guardar();
+  pintar();
+}
+
+document.getElementById("form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const input = document.getElementById("texto");
+  const texto = input.value.trim();
+  if (!texto) return;
+  tareas.push({ texto, hecha: false });
+  input.value = "";
+  actualizar();
+});
+
+document.getElementById("borrar").addEventListener("click", () => {
+  tareas = [];
+  // TODO 4: borrar la clave "tareas" de localStorage.
+  pintar();
+});
+
+pintar();
+</script>
+</body>
+</html>

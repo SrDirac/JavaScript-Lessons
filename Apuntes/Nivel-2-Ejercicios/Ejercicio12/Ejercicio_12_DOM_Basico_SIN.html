@@ -10,7 +10,27 @@
         </style>
 
         <script type="text/javascript">
-           
+            window.onload= function(){
+                let botonEnlace= document.getElementById("enlace");
+
+                botonEnlace.addEventListener("click", function(){
+                    //Almacenamos el parrafo el contenido adicional en una variable 
+                    //Este ejercicio se podría haber hecho con un .appendChild(), pero por practicar lo he añadido como innerHTML.
+                    let textoParrafo=document.getElementById("texto");
+                    let contenidoAdicional=document.getElementById("adicional");
+
+                    //Cambiamos la clase de contenidoAdicional para que el display pase a ser inline y no none.
+                    contenidoAdicional.classList.add("visible");
+                    textoParrafo.innerHTML=`
+                        ${textoParrafo.textContent} " " ${contenidoAdicional.textContent}
+                    `;
+                    botonEnlace.classList.add("oculto");
+
+                    //textoParrafo.appendChil(contenidoAdicional);
+                    
+                })
+            }
+
         </script>
     </head>
 
@@ -30,8 +50,6 @@
                 Praesent id metus.
             </span></p>
         <a id="enlace" href="#" onclick="muestra(); return false;">Seguir leyendo</a>
-        <script src="script3.js"></script>
     </body>
 </html>
 
-ç

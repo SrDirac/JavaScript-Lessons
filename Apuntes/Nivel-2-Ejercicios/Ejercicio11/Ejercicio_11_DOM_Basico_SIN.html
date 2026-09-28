@@ -7,7 +7,49 @@
 
     <script type="text/javascript">
         window.onload = function () {
+            // Ejercicio 1
+            // Mostrar pon pantalla :
+            // * El numero de enlaces de la página
+            // * Direccion del útlimo enlace
+            // * Numero de enlaces que enlazan a http://prueba
+            // * Numero de enlaces del tercer párrafo
 
+            // Declaracion de variables 
+            let body= document.getElementsByTagName("body");
+
+            //*Primer ejercicio
+            let numEnlaces = document.body.getElementsByTagName("a"); // Creamos una variable donde almacene todos las etiquetas "a"
+
+            //*Segundo ejercicio
+            let href=numEnlaces[numEnlaces.length-1].getAttribute("href");
+
+            //*Tercer ejercicio , Recorremos con un for el numEnlaces para averiguar el numEnlaces que tienen ese href.
+            let contadorEnlaces=0;
+            for(let numEnlace of numEnlaces){
+                if(numEnlace.getAttribute("href")==="http://prueba"){
+                    contadorEnlaces++;
+                }
+            }
+
+            //*Cuarto Ejercicio, numEnlaces del tercer parrafo
+            // muy parecido al primero , 1º almacenamos los parrafos en un elemento
+            // 2º guardamos el ultimo parrafo en otro elemento
+            // 3º creamos un elemento que almacene todos los elementos "a" del último parrafo
+            let parrafos= document.getElementsByTagName("p");
+            let ultimoParrafo=parrafos[parrafos.length-1];
+            let numEnlacesUltimoParrafo= ultimoParrafo.getElementsByTagName("a");
+
+            //Añadimos los resultados a div id=info
+            let info = document.getElementById("info");
+            //.length para "contar" cuantos elementos "a" hay en la variable numEnlaces
+            info.innerHTML=`
+                <h3> Resultado </h3>
+                <p><strong> Numero de enlaces de la página : </strong>${numEnlaces.length} </p>
+                <p><strong> Dirección del ultimo enlace de la página : </strong> ${href} </p>
+                <p><strong> Numero de enlaces que enlazan con http://prueba : </strong> ${contadorEnlaces} </p>
+                <p><strong> Numero de enlaces del último parrafo  : </strong>${numEnlacesUltimoParrafo.length} </p>
+
+            `;
         }
     </script>
 </head>
@@ -47,7 +89,7 @@
         tristique, ipsum odio euismod tortor, a vestibulum nisl mi at odio. <a href="http://prueba5">Sed non lectus non
             est pellentesque</a> auctor.</p>
 
-    <script src="/script2.js"></script>
+
 </body>
 
 </html>
