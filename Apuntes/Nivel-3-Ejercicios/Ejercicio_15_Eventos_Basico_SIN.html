@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://w3.org">
+<html xmlns="http://w3.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Ejercicio 15 - Base Inicial</title>
+    <style type="text/css">
+        body {
+            font-family: arial, helvetica;
+        }
+        #info {
+            width: 160px;
+            border: thin solid silver;
+            padding: .5em;
+            position: fixed;
+            background-color: #fcfcfc;
+        }
+        #info h1 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+    </style>
+    <script type="text/javascript">
+        function mostrarCordenadas(e){
+            //Cliente 
+            let x =e.clientX;
+            let y= e.clientY;
+
+            //Pagina ss
+            let px=e.pageX;
+            let py=e.pageY;
+            
+            //Modificamos el inner para que muestre los valores asignados
+            document.querySelector("p").innerHTML=`
+                Navegador[${x} , ${y}]<br>
+                Página [${px}, ${py}]
+            `;
+             // Modificamos el color y el encabezado para cada circustancia
+            document.getElementById("info").style.backgroundColor="#FFFFCC"
+            document.querySelector("h1").innerHTML="Ratón"
+
+        }
+
+        function mostrarTeclado(e){
+            let tecla= e.key;
+            let codigo= e.keyCode;
+
+            // Modificamos para que muestre el carácter y el codigo de la tecla
+            document.querySelector("p").innerHTML=`
+                Caracter[${tecla}]<br>
+                Código [${codigo}]
+                `;
+            // Modificamos el color y el encabezado para cada circustancia
+            document.getElementById("info").style.backgroundColor="#CCE6FF"
+            document.querySelector("h1").innerHTML="Teclado"
+        }
+
+    </script>
+</head>
+<!-- En una misma etiqueta ejecutamos las dos variables que se ejecutaran si detectan un evento u otro-->
+<body onmousemove="mostrarCordenadas(event)"; onkeydown="mostrarTeclado(event)">
+<div id="info">
+    <h1>Información</h1>
+    <p>Mueve el ratón o pulsa una tecla para ver los detalles del evento.</p>
+</div>
+
+<div style="height: 1000px;"></div> <!-- Espacio para poder hacer scroll y probar pageX/pageY -->
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://w3.org">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Ejercicio 16 - Zonas de la pantalla</title>
+    <style type="text/css">
+        body {
+            font-family: arial, helvetica;
+            margin: 0;
+            padding: 0;
+        }
+
+        #info {
+            width: 200px;
+            border: thin solid silver;
+            padding: .5em;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: #fcfcfc;
+        }
+
+        #info h1 {
+            margin: 0;
+            font-size: 1.1em;
+        }
+    </style>
+    <script type="text/javascript">
+
+        // Función proporcionada para determinar el tamaño de la ventana
+        const tamanoVentanaNavegador = () => {
+            return {
+                ancho: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+                alto: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+            };
+        };
+
+        function examinaPantalla(elEvento) {
+          
+            const evento = elEvento || window.event;
+
+            // 1. Obtener las coordenadas del clic del ratón (valores fijos, usamos const)
+            const x = evento.clientX;
+            const y = evento.clientY;
+
+            // 2. Obtener el tamaño de la ventana y calcular mitades
+            const dimensiones = tamanoVentanaNavegador();
+            const mitadAncho = dimensiones.ancho / 2;
+            const mitadAlto = dimensiones.alto / 2;
+
+            // 3. Determinar la zona horizontal y vertical 
+            let horizontal = "";
+            let vertical = "";
+
+            if (x < mitadAncho) {
+                horizontal = "izquierda";
+            } else {
+                horizontal = "derecha";
+            }
+
+            if (y < mitadAlto) {
+                vertical = "arriba";
+            } else {
+                vertical = "abajo";
+            }
+
+            // 4. Para que el usuario sepa en qué zona ha pulsado
+            alert(`Has pulsado en la zona: ${horizontal} ${vertical}`);
+        }
+
+        window.onload = function () {
+            document.onclick = examinaPantalla;
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div id="info">
+        <h1>Zonas de pantalla</h1>
+        <p>Haz clic en cualquier parte de la ventana para averiguar en qué cuadrante estás pulsando.</p>
+    </div>
+</body>
+
+</html>
