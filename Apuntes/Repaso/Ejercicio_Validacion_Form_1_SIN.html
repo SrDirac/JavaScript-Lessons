@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8" />
+	<title>Validar Formularios</title>
+	<style type="text/css">
+		span {
+			color: red;
+			font-weight: bold;
+			margin-left: 10px;
+		}
+	</style>
+	<script src="Utilidades.js"></script>
+</head>
+
+<body>
+	<h1>Ejercicio Validación de Formularios</h1>
+
+	<form id="formulario_1" onsubmit="validaFormulario1(event)">
+		<h3>Formulario de Registro:</h3>
+		
+		<p>
+			<label for="nombre">Nombre: </label>
+			<input type="text" name="nombre" id="nombre" maxlength="25" size="15" oninput="validarNombre()" />
+			<span id="info_nombre"></span>
+			<div>(Mínimo 2 letras)</div>
+		</p>
+
+		<p>
+			<label for="apellidos">Apellidos: </label>
+			<input type="text" name="apellidos" id="apellidos" maxlength="50" size="30" oninput="validarApellidos()" />
+			<span id="info_apellidos"></span>
+		</p>
+
+		<p>
+			<label for="dni">NIF: </label>
+			<input type="text" name="dni" id="dni" maxlength="9" size="9" oninput="validardDni()" />
+			<span id="info_dni"></span>
+		</p>
+
+		<p>
+			<label for="sexo">Sexo: </label>
+			<select id="sexo" change="validarSexo()" onblur="validarSexo()">
+				<option value="">Selecciona una opción</option>
+				<option value="F">Femenino</option>
+				<option value="M">Masculino</option>
+				<option value="Y">Ya quisiera yo</option>
+			</select>
+			<span id="info_sexo"></span>
+		</p>
+		
+		<p>
+			<label for="f_dia">Fecha de nacimiento: </label>
+			<input type="text" id="f_dia" maxlength="2" size="1" oninput="validarFecha()" /> /
+			<input type="text" id="f_mes" maxlength="2" size="1" oninput="validarFecha()" /> /
+			<input type="text" id="f_ano" maxlength="4" size="3" oninput="validarFecha()" /> (dd/mm/aaaa)
+			<span id="info_fecha"></span>
+		</p>
+
+		<p>
+			<label for="sugerencia">Alguna sugerencia: </label><br>
+			<textarea id="sugerencia" name="sugerencia" oninput="validarSugerencia()"></textarea>
+			<span id="info_sugerencia"></span>
+		</p>
+
+		<p><b>Todos los campos son obligatorios.</b></p>
+		
+		<p>
+			<input type="submit" value="ENVIAR">
+			<input type="reset" value="Limpiar">
+		</p>
+	</form>
+</body>
+</html>

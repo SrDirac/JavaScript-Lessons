@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8" />
+	<title>Validar Formularios</title>
+	<style type="text/css">
+		span {
+			color: red;
+		}
+	</style>
+	<script src="Utilidades.js"></script>
+	<script>
+		function validarNombre() {
+			let longitud = false, letras = false;
+			let inputNombre = document.getElementById("nombre").value;
+			let patron = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
+			let infoNombre = document.getElementById("info_nombre");
+
+			// Validamos el patrón de letras
+			if (!patron.test(inputNombre) && inputNombre.length > 0) {
+				infoNombre.innerHTML = "Solo se permiten letras";
+				letras = true;
+			}
+
+			// Validamos la longitud mínima
+			if (inputNombre.length < 2) {
+				infoNombre.innerHTML = "Mínimo 2 letras";
+				longitud = true;
+			}
+
+			// Si fallan ambas condiciones
+			if (longitud && letras) {
+				infoNombre.innerHTML = "Mínimo 2 caracteres, solo letras";
+			}
+
+			// Limpiamos el error si todo es correcto
+			if (!longitud && !letras) {
+				infoNombre.innerHTML = "";
+			}
+		}
+
+		function validarNif() {
+			let dni = document.getElementById("dni").value;
+			let pattern = /^\d{8}[A-Za-z]$/;
+			let infoDni = document.getElementById("info_dni");
+
+			// Si el campo está vacío, limpiamos el mensaje y salimos
+			if (dni === "") {
+				infoDni.innerHTML = "";
+				return;
+			}
+
+			// 1. Validamos primero el formato general (8 números y 1 letra)
+			if (!pattern.test(dni)) {
+				infoDni.innerHTML = "Formato incorrecto (ej: 12345678A)";
+				return; 
+			}
+
+			// Declaramos las variables de cálculo matemático
+			let numeroDni = dni.substring(0, 8), letrasValidas = "TRWAGMYFPDXBNJZSQVHLCKE";
+			let resto = Number(numeroDni) % 23;
+			let letraCorrecta = letrasValidas[resto];
+
+			// Obtenemos la letra del usuario en mayúscula
+			let letraUsuario = dni.charAt(8).toUpperCase();
+
+			// 2. Validamos si la letra es la matemáticamente correcta
+			if (letraUsuario !== letraCorrecta) {
+				infoDni.innerHTML = "Letra incorrecta, inténtelo de nuevo";
+			} else {
+				infoDni.innerHTML = "DNI correcto";
+			}
+		}
+		
+		function validarSexo(){
+			let select = document.getElementById("sexo").value;
+			let infoSexo = document.getElementById("info_sexo");
+			if (select === ""){
+				infoSexo.innerHTML = "Seleccione una opción válida";
+			} else {
+				infoSexo.innerHTML = "Sexo correcto";
+			}
+		}
+
+		function validarSugerencia(){
+			let sugerencia = document.getElementById("sugerencia");
+			let infoSugerencia = document.getElementById("info_sugerencia");
+			
+			// Cambiado a .trim() para evitar que envíen espacios en blanco vacíos
+			if (sugerencia.value.trim() === ""){
+				infoSugerencia.innerHTML = "Es necesario enviar una sugerencia";
+			} else {
+				infoSugerencia.innerHTML = "";
+			}
+		}
+	</script>
+</head>
+
+<body>
+	<h1>Ejercicio Validación de Formularios</h1>
+	<form id="formulario_1">
+		<h3>Formulario de Registro:</h3>
+		
+		<p>
+			<label for="nombre">Nombre: </label>
+			<input type="text" name="nombre" id="nombre" oninput="validarNombre()" maxlength="25" size="15" />
+			<span id="info_nombre"></span>
+			<div>(Mínimo 2 letras)</div>
+		</p>
+
+		<p>
+			<label for="dni">NIF: </label>
+			<input type="text" name="dni" id="dni" maxlength="9" oninput="validarNif()" size="9" />
+			<span id="info_dni"></span>
+		</p>
+
+		<p>
+			<label>Sexo: </label>
+			<select id="sexo" onchange="validarSexo()">
+				<option value="">Selecciona una opción</option>
+				<option value="F">Femenino</option>
+				<option value="M">Masculino</option>
+				<option value="Y">Ya quisiera yo</option>
+			</select>
+			<span id="info_sexo"></span>
+		</p>
+
+		<p>
+			<label for="sugerencia">Alguna sugerencia: </label>
+			<!-- Cambiado onchange por oninput para que valide en tiempo real mientras escribe -->
+			<textarea id="sugerencia" name="sugerencia" oninput="validarSugerencia()"></textarea>
+			<span id="info_sugerencia"></span>
+		</p>
+
+		<p><b>Todos los campos son obligatorios.</b></p>
+		
+		<p>
+			<input type="submit" value="ENVIAR">
+			<input type="reset" value="Limpiar">
+		</p>
+	</form>
+</body>
+</html>
