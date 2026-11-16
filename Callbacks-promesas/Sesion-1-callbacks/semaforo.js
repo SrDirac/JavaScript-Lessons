@@ -25,16 +25,23 @@
 const semaforo = document.getElementById('semaforo');
 
 // Tu código aquí:
-function cicloColor(){
-    cambiarColor('green',3000,()=>{
-        cambiarColor('orange',1000,()=>{
-             cambiarColor('red',3000,cicloColor)
-        });
-    });
-}
+
+// Pinta el color y, pasados ms, avisa llamando al callback.
+// Así quien la usa decide qué pasa después (el siguiente color).
 function cambiarColor(color, ms, callback) {
   semaforo.style.background = color;
   setTimeout(callback, ms);
+}
+
+// Cada color se lanza dentro del callback del anterior para respetar el
+// orden. Al acabar el rojo se pasa la propia cicloColor como callback,
+// y así el ciclo se repite sin fin (sin bucle, que bloquearía la página).
+function cicloColor() {
+  cambiarColor('green', 3000, () => {
+    cambiarColor('orange', 1000, () => {
+      cambiarColor('red', 3000, cicloColor);
+    });
+  });
 }
 
 cicloColor();

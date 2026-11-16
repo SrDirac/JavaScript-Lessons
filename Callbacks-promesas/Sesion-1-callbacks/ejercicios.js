@@ -19,11 +19,15 @@ function crearPunto(x, y) { return { x: x, y: y }; }
 function aleatorio() { return Math.random(); }
 
 // Tu código aquí:
+// Forma más corta: sin paréntesis si hay un solo parámetro, sin llaves ni
+// return si el cuerpo es una sola expresión. Para devolver un objeto se
+// envuelve en ( ) para que { } no se confunda con el cuerpo de la función.
+const cuadrado1 = x => x ** 2;
+const saludo1 = (nombre, hora) => `Buenas ${hora}, ${nombre}`;
+const crearPunto1 = (x, y) => ({ x, y });
+const aleatorio1 = () => Math.random();
 
-const cuadrado1=x=>x**2
-const saludo1=(nombre,hora)=>`Buenas ${hora}, ${nombre}`
-const crearPunto1=(x,y)=>({x,y})
-const aleatorio1=()=>Math.random()
+// Comprobaciones: todas deben imprimir true
 
 console.log(cuadrado(5) === cuadrado1(5));
 console.log(saludo('Ana', 'tardes') === saludo1('Ana', 'tardes'));
@@ -47,14 +51,17 @@ console.log(aleatorio1() >= 0 && aleatorio1() < 1);
 const frutas = ['manzana', 'pera', 'uva'];
 const numeros = [3, 8, 1, 12];
 
-const repetir=(veces,fn)=>{
+// repetir recibe una función (callback) y la llama "veces" veces.
+// Es la base de miForEach: la lógica del bucle es fija y lo que se hace
+// en cada vuelta lo decide quien llama.
+const repetir = (veces, fn) => {
   for (let index = 0; index < veces; index++) {
-   fn(index)
+    fn(index);
   }
-}
-repetir(frutas.length,i=>console.log(i +' , '+  frutas[i]))
-console.log("\n")
-repetir(numeros.length,i=> console.log(i +' , '+  numeros[i]))
+};
+repetir(frutas.length, i => console.log(i + ' , ' + frutas[i]));
+console.log('\n');
+repetir(numeros.length, i => console.log(i + ' , ' + numeros[i]));
 
 
 
@@ -71,15 +78,17 @@ repetir(numeros.length,i=> console.log(i +' , '+  numeros[i]))
 // y callback(array[i], i) en lugar de fn(i).
 // No hace falta return: el callback ya hace el trabajo (imprimir).
 
+// Recorre el array y pasa (elemento, posición) al callback, igual que forEach.
+// No devuelve nada: el trabajo lo hace el callback.
 const miForEach = (array, callback) => {
   for (let index = 0; index < array.length; index++) {
-    callback(array[index],index) 
+    callback(array[index], index);
   }
 };
 
-miForEach(frutas,(fruta,pos)=>console.log(pos, fruta))
-console.log("\n")
-miForEach(numeros,(numero,pos)=>console.log(pos, numero))
+miForEach(frutas, (fruta, pos) => console.log(pos + ': ' + fruta));
+console.log('\n');
+miForEach(numeros, (numero, pos) => console.log(pos + ': ' + numero));
 
 
 // Prueba (quita las // de la línea de abajo cuando tengas la función):
@@ -104,14 +113,17 @@ miForEach(numeros,(numero,pos)=>console.log(pos, numero))
 //
 // Aquí SÍ hace falta return: quien llama a miFilter quiere el array.
 
+// Crea un array NUEVO (no modifica el original) con los elementos para los
+// que el callback "condicion" devuelve true. Aquí sí hay return porque
+// quien llama necesita el resultado.
 const miFilter = (array, condicion) => {
-  const resultado=[]
-  for (const a of array) {
-    if (condicion(a)){
-      resultado.push(a)
+  const resultado = [];
+  for (const elemento of array) {
+    if (condicion(elemento)) {
+      resultado.push(elemento);
     }
   }
-  return resultado
+  return resultado;
 };
 
 // Pruebas (quita las // cuando tengas la función):
@@ -128,13 +140,17 @@ console.log(miFilter(frutas, f => f.length > 4));   // [ 'manzana' ]
 // setTimeout(..., 0) sí.
 // ---------------------------------------------------------------------
 
-// Mi predicción:1,4,5,6,3,2
+// Mi predicción: 1, 4, 5, 6, 3, 2
 // Mi explicación:
 /*
-  Los consolelog tanto los forEach entran directamente en la pila de llamadas
-  es decir primero javaScript ejecuta el codigo sincrono sin pausas  y entra 
-  en la cola de espera los setTimeout() primero 0 y luego 100, una vez se haya 
-  terminado de ejecutar los console.log se ejecutaran los setTimeOut()
+  1, 4, 5 y 6 son código síncrono: van directos a la pila de llamadas y se
+  ejecutan en orden. forEach NO espera porque es síncrono: llama al callback
+  en el momento, en cada vuelta del bucle.
+  setTimeout, en cambio, no ejecuta su función: la deja programada y, cuando
+  vence el tiempo, la mete en la cola de tareas. El bucle de eventos solo
+  saca tareas de esa cola cuando la pila está vacía, por eso incluso con
+  0 ms el 3 sale después del código síncrono. El 2 sale el último porque
+  su temporizador (100 ms) vence más tarde que el de 0 ms.
 */
 
 console.log('1');
