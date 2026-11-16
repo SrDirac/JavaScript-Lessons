@@ -38,7 +38,7 @@ const tarea = (nombre, ms, falla = false) => new Promise((resolve, reject) => {
 // Las dos funciones devuelven su promesa para poder ejecutarlas una
 // detrás de otra y que los tiempos no se mezclen.
 
-// a) EN SERIE: cada then devuelve la siguiente tarea, que no empieza
+// a) En serie : cada then devuelve la siguiente tarea, que no empieza
 //    hasta que acaba la anterior.
 function enSerie() {
   console.time('serie');
@@ -48,7 +48,7 @@ function enSerie() {
     .then(() => console.timeEnd('serie'));
 }
 
-// b) EN PARALELO: las tres tareas se crean (y arrancan) a la vez dentro
+// b) En paralelo: las tres tareas se crean (y arrancan) a la vez dentro
 //    del array; Promise.all espera a que terminen todas.
 function enParalelo() {
   console.time('paralelo');
@@ -130,10 +130,18 @@ function conTimeout(promesa, ms) {
   return Promise.race([promesa, limite]);
 }
 
+// Pruebo los dos casos uno detrás de otro: primero el que llega a
+// tiempo y después el que se pasa del límite.
 function probarTimeout() {
+  // La tarea tarda 0,5 s y le doy 1 s de margen, así que gana la tarea.
   return conTimeout(tarea('Rápida', 500), 1000)
-    .then(r => console.log('Cumplida:', r))                 // Cumplida: Rápida
-    .then(() => conTimeout(tarea('Lenta', 2000), 1000))
+    // Aquí llega 'Rápida', porque terminó antes del límite.
     .then(r => console.log('Cumplida:', r))
-    .catch(err => console.log('Falla:', err.message));     // Falla: Tiempo agotado
+    // Ahora la tarea tarda 2 s pero solo le doy 1 s: gana el límite.
+    // Devuelvo la promesa para que el siguiente then la espere.
+    .then(() => conTimeout(tarea('Lenta', 2000), 1000))
+    // Este then no llega a ejecutarse, porque la promesa de antes falla.
+    .then(r => console.log('Cumplida:', r))
+    // El error 'Tiempo agotado' se salta los then y cae aquí.
+    .catch(err => console.log('Falla:', err.message));
 }

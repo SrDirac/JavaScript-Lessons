@@ -101,6 +101,8 @@ lanzarMoneda()
 // ---------------------------------------------------------------------
 
 // Tu código aquí:
+// Recibe parametro edad 
+// Si la edad es valida -->Puede entrar ? Sino: reject new Error Es menor de edad , el tiempo es de 1000ms(1s)
 function comprobarEdad(edad) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -111,6 +113,9 @@ function comprobarEdad(edad) {
 }
 
 // Se prueba con los dos casos que pide el enunciado: 20 (cumple) y 15 (rechaza)
+//Primero se ejecuta el 20-> entra en el then e imprime la edad y el mensaje '20:Puede entrar' 
+//Luego se ejecuta el 15--> entra en catch porque el error se recoge ya 15 no es mayor o igual 18 , imprime '15:Es menor de edad'
+//En ambos usuarios , una vez finalizado entran ambos en el finally e imprime 'Usuario finalizado';
 [20, 15].forEach(edad => {
   comprobarEdad(edad)
     .then(mensaje => console.log(edad + ':', mensaje))
@@ -160,12 +165,23 @@ function esperar(ms) {
 // Cada then que DEVUELVE esperar(1000) hace que el siguiente aguarde 1 s.
 // Van encadenados (uno debajo de otro), no anidados.
 console.log('3');
+// arranca el primer temporizador de 1 s
 esperar(1000)
+  // t = 1 s: se cumple la espera → muestra 2
   .then(() => console.log('2'))
+  // DEVUELVE una promesa: el siguiente then espera a que se cumpla
   .then(() => esperar(1000))
+  // t = 2 s: muestra 1
   .then(() => console.log('1'))
+  // otra espera de 1 s (también devuelta con return implícito)
   .then(() => esperar(1000))
+  // t = 3 s: muestra ¡Ya!
   .then(() => console.log('¡Ya!'));
+
+// Ojo: la flecha sin llaves () => esperar(1000) hace return implícito.
+// Si se escribiera () => { esperar(1000); } (con llaves y sin return),
+// el then devolvería undefined y no se esperaría nada: 1 y ¡Ya! saldrían
+// seguidos justo después del 2.
 
 // ---------------------------------------------------------------------
 // EJERCICIO 2.7 · Predice el orden (reto)

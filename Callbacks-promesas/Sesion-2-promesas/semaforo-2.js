@@ -17,7 +17,7 @@ const semaforo = document.getElementById('semaforo');
 
 // Tu código aquí:
 
-// Promesa que se cumple pasados ms. Sustituye al callback de la versión 1.4.
+// Promesa que se cumple pasados ms. Sustituye al callback Sesion-1.
 function esperar(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -40,7 +40,7 @@ function ciclo() {
 
 ciclo();
 
-// Comparación con el 1.4:
+// Comparación con Sesion-1:
 // Con callbacks cada color va DENTRO del anterior (pirámide / callback hell).
 // Con promesas los pasos van uno DEBAJO de otro, en plano: con diez colores
 // serían diez then seguidos, fácil de leer y de cambiar, y un solo catch
